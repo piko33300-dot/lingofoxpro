@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "LingoFox",
+    "slug": "lingofox",
+    "scheme": "lingofox",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#fdfaf4",
+    "android": {
+      "package": "com.lingofox.app",
+      "supportsRTL": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.lingofox.app",
+      "supportsTablet": false,
+      "requireFullScreen": true
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
