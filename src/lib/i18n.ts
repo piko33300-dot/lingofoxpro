@@ -39,7 +39,9 @@ const ar = {
   quitLesson: "إنهاء الدرس",
   check: "تحقّق",
   continue: "متابعة",
+  back: "رجوع",
   amazing: "رائع! 🎉",
+  correct: "إجابة صحيحة",
   correctAnswer: "الإجابة الصحيحة:",
   qMc: "اختر الترجمة الصحيحة",
   qBuilder: "ترجم هذه الجملة",
@@ -149,8 +151,11 @@ const ar = {
   heartsAdBtn: "مشاهدة إعلان لتعبئة القلوب",
   heartsPracticeLink: "أو تدرّب على درس سريع لاستعادة قلب مجاناً",
   gemsModalTitle: "رصيد الجواهر",
+  gemsBalance: "لديك {n} جوهرة",
   gemsModalDesc: "اكسب الجواهر عند إتمام الدروس وتحديات السرعة واستخدمها لتجميد الحماسة وتعبئة القلوب.",
   streakModalTitle: "حماستك اليومية",
+  streakCurrent: "تتابعك الحالي: {n} يوم",
+  streakFreezeEquipped: "تجميدات التتابع المتاحة: {n}",
   streakModalDesc: "حافظ على تتابعك يومياً لتصعد في دوريات المتصدرين وتضاعف نقاطك.",
   practiceEmpty: "أكمل درساً أولاً، ثم عُد هنا لمراجعة ما تعلّمته.",
   backToLearn: "العودة للتعلّم",
@@ -184,6 +189,7 @@ const ar = {
   tutorStarter1: "عرّفني بنفسك",
   tutorStarter2: "لنتدرّب على طلب الطعام في مطعم",
   tutorStarter3: "صحّح جملتي",
+  tutorStarter4: "تدرّب معي على مقابلة عمل",
   tutorVoiceInput: "تحدّث بالصوت",
   tutorVoiceListening: "استمع… تكلّم الآن",
   tutorListen: "استمع للنطق",
@@ -301,6 +307,7 @@ const ar = {
   dailyQuestsSub: "أكمل المهام اليومية لكسب الجواهر ونقاط الخبرة وترقية شارة الثعلب الشهرية!",
   questClaim: "استلام المكافأة",
   questClaimed: "تم الاستلام ✓",
+  questCompleted: "مكتملة",
   questClaimedToast: "تمت إضافة {gems} جوهرة و {xp} XP إلى رصيدك! 🎉",
   questAlreadyClaimed: "تم استلام هذه المكافأة مسبقاً ولا يمكن احتسابها مرتين.",
   syncStatusOnline: "تمت المزامنة سحابياً",
@@ -400,7 +407,9 @@ const en: Record<I18nKey, string> = {
   quitLesson: "Quit lesson",
   check: "Check",
   continue: "Continue",
+  back: "Back",
   amazing: "Amazing! 🎉",
+  correct: "Correct answer",
   correctAnswer: "Correct answer:",
   qMc: "Select the correct translation",
   qBuilder: "Translate this sentence",
@@ -510,8 +519,11 @@ const en: Record<I18nKey, string> = {
   heartsAdBtn: "Watch Ad for Full Refill",
   heartsPracticeLink: "Or complete a quick drill to earn 1 heart for free",
   gemsModalTitle: "Gems Balance",
+  gemsBalance: "You have {n} gems",
   gemsModalDesc: "Earn gems by completing lessons and speed drills. Use them for streak freeze and heart refills.",
   streakModalTitle: "Daily Streak",
+  streakCurrent: "Current streak: {n} days",
+  streakFreezeEquipped: "Streak freezes available: {n}",
   streakModalDesc: "Keep your daily streak alive to climb the leagues and boost your learning rate.",
   practiceEmpty: "Finish a lesson first, then come back here to review.",
   backToLearn: "Back to learning",
@@ -545,6 +557,7 @@ const en: Record<I18nKey, string> = {
   tutorStarter1: "Introduce yourself to me",
   tutorStarter2: "Let's practice ordering food in a restaurant",
   tutorStarter3: "Correct my sentence",
+  tutorStarter4: "Practice a job interview with me",
   tutorVoiceInput: "Voice input",
   tutorVoiceListening: "Listening… speak now",
   tutorListen: "Listen to pronunciation",
@@ -661,6 +674,7 @@ const en: Record<I18nKey, string> = {
   dailyQuestsSub: "Complete daily quests to earn gems, XP, and advance your monthly Fox Badge!",
   questClaim: "Claim Reward",
   questClaimed: "Claimed ✓",
+  questCompleted: "Completed",
   questClaimedToast: "Added {gems} gems and {xp} XP to your balance! 🎉",
   questAlreadyClaimed: "This reward was already claimed and cannot be awarded twice.",
   syncStatusOnline: "Synced with cloud",
@@ -760,7 +774,7 @@ export function useLang(): UiLang {
 }
 
 export function translate(l: UiLang, key: I18nKey, vars?: Record<string, string | number>) {
-  let s = DICTS[l][key];
+  let s = DICTS[l]?.[key] ?? DICTS.ar[key] ?? String(key);
   if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
   return s;
 }

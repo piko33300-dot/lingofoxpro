@@ -42,7 +42,10 @@ export function TopBar() {
   };
 
   const handleRefillAd = () => {
-    progressActions.refillHeartsWithAd();
+    if (!progressActions.rewardAd()) {
+      toast.error(t("adLimit"));
+      return;
+    }
     toast.success(t("heartRestored"));
     setHeartsOpen(false);
   };
@@ -231,10 +234,10 @@ export function TopBar() {
             {t("streakModalDesc")}
           </p>
 
-          {p.streakFreeze > 0 && (
+          {p.freezes > 0 && (
             <div className="flex items-center justify-center gap-2 rounded-xl bg-accent p-3 text-sm font-semibold text-accent-foreground">
               <Shield className="size-5 text-gem" />
-              <span>{t("streakFreezeEquipped", { n: p.streakFreeze })}</span>
+              <span>{t("streakFreezeEquipped", { n: p.freezes })}</span>
             </div>
           )}
 
