@@ -118,6 +118,16 @@ describe("Mutation Queue, Error Classification & Telemetry Engine", () => {
       expect(stats.pending).toBe(1);
     });
 
+    it("returns a stable stats snapshot until the queue changes", () => {
+      const first = getQueueStats();
+      expect(getQueueStats()).toBe(first);
+
+      enqueueMutation({ type: "test_action", payload: { value: 1 } });
+      const next = getQueueStats();
+      expect(next).not.toBe(first);
+      expect(getQueueStats()).toBe(next);
+    });
+
     it("coalesces tasks with the same dedupKey instead of creating duplicates", () => {
       const id1 = enqueueMutation({
         type: "sync_progress",

@@ -65,7 +65,7 @@ function Tutor() {
   const [mood, setMood] = useState<FoxMood>("neutral");
 
   return (
-    <AppPage active="tutor">
+    <AppPage>
       <div className="mx-auto flex h-[calc(100dvh-5rem)] max-w-2xl flex-col px-4 pt-3 pb-2 sm:h-[calc(100dvh-5.5rem)]">
         <header className="mb-3 flex items-center justify-between gap-3 border-b-2 border-border pb-3">
           <div className="flex items-center gap-3">
@@ -77,7 +77,7 @@ function Tutor() {
                 <h1 className="font-display text-lg font-bold text-secondary">{t("tutorTitle")}</h1>
                 <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
                   <Sparkles className="size-3" />
-                  {course.flag} {loc(course.nameKey)}
+                  {course.flag} {loc(course.title)}
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">{t("tutorSub")}</p>
@@ -102,7 +102,7 @@ function Tutor() {
           <TutorChat userId={user.id} course={course} onMoodChange={setMood} />
         )}
       </div>
-      <BottomNav active="tutor" />
+      <BottomNav />
     </AppPage>
   );
 }
@@ -190,6 +190,7 @@ function TutorChat({
       }, 1000);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [isRecording, recordingMethod]);
 
   useEffect(() => {

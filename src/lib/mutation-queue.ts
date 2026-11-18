@@ -93,8 +93,10 @@ let lastProcessedAt: number | null = null;
 
 const handlers = new Map<string, MutationHandler<any>>();
 const listeners = new Set<() => void>();
+let cachedQueueStats: QueueStats | null = null;
 
 function emitChange() {
+  cachedQueueStats = null;
   listeners.forEach((l) => l());
 }
 
@@ -339,17 +341,17 @@ export function enqueueMutation<T = any>(options: EnqueueOptions<T>): string {
     );
 
     if (existingIndex >= 0) {
-      const existing = tasks[existingIndex];
+      const existing = tasks[existingIndex]!;
       const updated: MutationTask<T> = {
         ...existing,
         payload,
         status: "pending",
-        lastError: undefined,
-        errorCategory: undefined,
-        isPermanent: undefined,
         attempts: 0,
         nextAttemptAt: Date.now(),
       };
+      delete updated.lastError;
+      delete updated.errorCategory;
+      delete updated.isPermanent;
       tasks[existingIndex] = updated;
       saveTasksToStorage(tasks);
       emitChange();
@@ -370,7 +372,7 @@ export function enqueueMutation<T = any>(options: EnqueueOptions<T>): string {
     maxDelayMs,
     nextAttemptAt: Date.now(),
     status: "pending",
-    dedupKey,
+    ...(dedupKey !== undefined ? { dedupKey } : {}),
   };
 
   tasks.push(newTask);
@@ -627,6 +629,7 @@ function getPendingCount(): number {
 /** Returns overall queue statistics for live telemetry and UI badges. */
 export function getQueueStats(): QueueStats {
   ensureInitialized();
+  if (cachedQueueStats) return cachedQueueStats;
 
   let pending = 0;
   let processing = 0;
@@ -656,7 +659,7 @@ export function getQueueStats(): QueueStats {
     }
   }
 
-  return {
+  cachedQueueStats = {
     total: tasks.length,
     pending,
     processing,
@@ -669,6 +672,7 @@ export function getQueueStats(): QueueStats {
     nextScheduledAttemptAt,
     failedTasks,
   };
+  return cachedQueueStats;
 }
 
 /**
